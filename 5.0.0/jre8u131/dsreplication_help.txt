@@ -1,0 +1,279 @@
+[appuser@6eb89be32f63 bin]$ ./dsreplication --help; ./dsreplication configure --help
+This utility can be used to configure replication between servers so that the
+data of the servers is synchronized.  For replication to work you must first
+enable replication using the 'enable' subcommand and then initialize the
+contents of one of the servers with the contents of the other using the
+'initialize' subcommand
+
+Usage:  dsreplication {subcommand} {options}
+
+Available subcommands:
+
+configure
+    Updates the configuration of the servers to replicate the data under the
+    specified base DN.  If one of the specified servers is already replicating
+    the data under the base DN with other servers, executing this subcommand
+    will update the configuration of all the servers (so it is sufficient to
+    execute the command line once for each server we add to the replication
+    topology)
+
+initialize
+    Initialize the contents of the data under the specified base DN on the
+    destination server with the contents on the source server.  This operation
+    is required after enabling replication in order replication to work
+    ('initialize-all' can also be used for this purpose)
+
+initialize-all
+    Initialize the contents of the data under the specified base DN on all the
+    servers whose contents are being replicated with the contents on the
+    specified server.  This operation is required after enabling replication
+    for replication to work ('initialize' applied to each server can also be
+    used for this purpose)
+
+post-external-initialization
+    This subcommand must be called after initializing the contents of all the
+    replicated servers using the tool import-ldif or the binary copy method.
+    You must specify the list of base DNs that have been initialized and you
+    must provide the credentials of any of the servers that are being
+    replicated.  See the usage of the subcommand 'pre-external-initialization'
+    for more information
+
+pre-external-initialization
+    This subcommand must be called before initializing the contents of all the
+    replicated servers using the tool import-ldif or the binary copy method.
+    You must specify the list of base DNs that will be initialized and you must
+    provide the credentials of any of the servers that are being replicated.
+    After calling this subcommand, initialize the contents of all the servers
+    in the topology (use the same LDIF file/binary copy on each of the
+    servers), then call the subcommand 'post-external-initialization'
+
+purge-historical
+    Launches a purge processing of the historical informations stored in the
+    user entries by replication. Since this processing may take a while, you
+    must specify the maximum duration for this processing.
+
+reset-change-number
+    Re-synchronizes the change-log changenumber on one server with the
+    change-log changenumber of another.
+
+resume
+    Resumes replication on the specified server
+
+status
+    Displays a list with the basic replication configuration of the base DNs of
+    the servers defined in the registration information.  If no base DNs are
+    specified as parameter the information for all base DNs is displayed
+
+suspend
+    Suspends (pauses) replication on the specified server
+
+unconfigure
+    Unconfigures replication on the specified server for the provided base DN
+    and removes references in the other servers with which it is replicating
+    data
+
+
+The global options are:
+
+-b, --baseDn {baseDN}
+    Base DN of the data to be replicated, initialized or for which we want to
+    unconfigure replication.  Multiple base DNs can be provided by using this
+    option multiple times
+-w, --adminPassword {bindPassword}
+    The global administrator password
+-j, --adminPasswordFile {bindPasswordFile}
+    The file containing the password of the global administrator
+--displayCommand
+    Display the equivalent non-interactive argument in the standard output when
+    this command is run in interactive mode
+--commandFilePath {path}
+    The full path to the file where the equivalent non-interactive commands
+    will be written when this command is run in interactive mode
+--connectTimeout {timeout}
+    Maximum length of time (in milliseconds) that can be taken to establish a
+    connection.  Use '0' to specify no time out
+    Default value: 30000
+
+Configuration Options
+
+--advanced
+    Allows the configuration of advanced components and properties
+
+LDAP connection options:
+
+-I, --adminUid {adminUID}
+    User ID of the Global Administrator to use to bind to the server.  For the
+    'enable' subcommand if no Global Administrator was defined previously for
+    none of the server the Global Administrator will be created using the
+    provided data.
+    Default value: admin
+-o, --saslOption {name=value}
+    SASL bind options
+-X, --trustAll
+    Trust all server SSL certificates
+-P, --trustStorePath {trustStorePath}
+    Certificate trust store path
+-T, --trustStorePassword {trustStorePassword}
+    Certificate trust store PIN
+-U, --trustStorePasswordFile {path}
+    Certificate trust store PIN file
+-K, --keyStorePath {keyStorePath}
+    Certificate key store path
+-W, --keyStorePassword {keyStorePassword}
+    Certificate key store PIN.  A PIN is required when you specify to use an
+    existing certificate as server certificate
+-u, --keyStorePasswordFile {keyStorePasswordFile}
+    Certificate key store PIN file.  A PIN is required when you specify to use
+    an existing certificate as server certificate
+-N, --certNickname {nickname}
+    Nickname of the certificate that the server should use when accepting
+    SSL-based connections or performing StartTLS negotiation
+
+Utility input/output options:
+
+-Q, --quiet
+    Use quiet mode
+-n, --no-prompt
+    Use non-interactive mode.  If data in the command is missing, the user is
+    not prompted and the tool will fail
+--propertiesFilePath {propertiesFilePath}
+    Path to the file containing default property values used for command line
+    arguments
+--noPropertiesFile
+    No properties file will be used to get default command line argument values
+
+General options:
+
+-V, --version
+    Display Directory Server version information
+-?, -H, --help
+    Display this usage information
+
+Usage:  dsreplication  {options} configure {options}
+Updates the configuration of the servers to replicate the data under the
+specified base DN.  If one of the specified servers is already replicating the
+data under the base DN with other servers, executing this subcommand will
+update the configuration of all the servers (so it is sufficient to execute the
+command line once for each server we add to the replication topology)
+
+
+Global Options:
+    See "dsreplication --help"
+
+SubCommand Options:
+-h, --host1 {host}
+    Fully qualified host name or IP address of the first server whose contents
+    will be replicated
+    Default value: 6eb89be32f63
+-p, --port1 {port}
+    Directory server administration port number of the first server whose
+    contents will be replicated
+    Default value: 4444
+-D, --bindDn1 {bindDN}
+    DN to use to bind to the first server whose contents will be replicated.
+    If not specified the global administrator will be used to bind
+    Default value: cn=Directory Manager
+--bindPassword1 {bindPassword}
+    Password to use to bind to the first server whose contents will be
+    replicated.  If no bind DN was specified for the first server the password
+    of the global administrator will be used to bind
+--bindPasswordFile1 {bindPasswordFile}
+    File containing the password to use to bind to the first server whose
+    contents will be replicated.  If no bind DN was specified for the first
+    server the password of the global administrator will be used to bind
+-r, --replicationPort1 {port}
+    Port that will be used by the replication mechanism in the first server to
+    communicate with the other servers.  You have to specify this option only
+    if replication was not previously configured in the first server
+    Default value: 8989
+--secureReplication1
+    Specifies whether the communication through the replication port of the
+    first server is encrypted or not.  This option will only be taken into
+    account the first time replication is configured on the first server
+--noReplicationServer1
+    Do not configure a replication port or change log on the first server. The
+    first server will contain replicated data but will not contain a change log
+    of modifications made to the replicated data. Note that each replicated
+    topology must contain at least two servers with a change log to avoid a
+    single point of failure
+--onlyReplicationServer1
+    Configure only a change log and replication port on the first server.  The
+    first server will not contain replicated data, but will contain a change
+    log of the modifications made to the replicated data on other servers
+-O, --host2 {host}
+    Fully qualified host name or IP address of the second server whose contents
+    will be replicated
+    Default value: 6eb89be32f63
+--port2 {port}
+    Directory server administration port number of the second server whose
+    contents will be replicated
+    Default value: 4444
+--bindDn2 {bindDN}
+    DN to use to bind to the second server whose contents will be replicated.
+    If not specified the global administrator will be used to bind
+    Default value: cn=Directory Manager
+--bindPassword2 {bindPassword}
+    Password to use to bind to the second server whose contents will be
+    replicated.  If no bind DN was specified for the second server the password
+    of the global administrator will be used to bind
+-F, --bindPasswordFile2 {bindPasswordFile}
+    File containing the password to use to bind to the second server whose
+    contents will be replicated.  If no bind DN was specified for the second
+    server the password of the global administrator will be used to bind
+-R, --replicationPort2 {port}
+    Port that will be used by the replication mechanism in the second server to
+    communicate with the other servers.  You have to specify this option only
+    if replication was not previously configured in the second server
+    Default value: 8989
+--secureReplication2
+    Specifies whether the communication through the replication port of the
+    second server is encrypted or not.  This option will only be taken into
+    account the first time replication is configured on the second server
+--noReplicationServer2
+    Do not configure a replication port or change log on the second server. The
+    second server will contain replicated data but will not contain a change
+    log of modifications made to the replicated data. Note that each replicated
+    topology must contain at least two servers with a change log to avoid a
+    single point of failure
+--onlyReplicationServer2
+    Configure only a change log and replication port on the second server.  The
+    second server will not contain replicated data, but will contain a change
+    log of the modifications made to the replicated data on other servers
+-S, --skipPortCheck
+    Skip the check to determine whether the specified replication ports are
+    usable
+--noSchemaReplication
+    Do not replicate the schema between the servers
+--useSecondServerAsSchemaSource
+    Use the second server to initialize the schema of the first server.  If
+    this option nor option --noSchemaReplication are specified the schema of
+    the first server will be used to initialize the schema of the second server
+
+
+Usage:  dsreplication  {options} initialize {options}
+Initialize the contents of the data under the specified base DN on the
+destination server with the contents on the source server.  This operation is
+required after enabling replication in order replication to work
+('initialize-all' can also be used for this purpose)
+
+
+Global Options:
+    See "dsreplication --help"
+
+SubCommand Options:
+-h, --hostSource {host}
+    Fully qualified host name or IP address of the source server whose contents
+    will be used to initialize the destination server
+    Default value: gamma2.hive.samuelloh.com
+-p, --portSource {port}
+    Directory server administration port number of the source server whose
+    contents will be used to initialize the destination server
+    Default value: 4444
+-O, --hostDestination {host}
+    Fully qualified host name or IP address of the destination server whose
+    contents will be initialized
+    Default value: gamma2.hive.samuelloh.com
+--portDestination {port}
+    Directory server administration port number of the destination server whose
+    contents will be initialized
+    Default value: 4444

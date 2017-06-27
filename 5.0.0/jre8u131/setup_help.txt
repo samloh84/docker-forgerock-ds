@@ -1,0 +1,81 @@
+[appuser@6eb89be32f63 opendj]$ ./setup --help; ./setup directory-manager --help
+This utility can be used to install an OpenDJ instance either as a directory
+server, a replication server or a proxy server
+
+Usage:  setup {subcommand} {options}
+
+Available subcommands:
+
+directory-server
+    Install an OpenDJ directory server instance. See "setup directory-server
+    --help" for specific options
+
+proxy-server
+    Install an OpenDJ proxy server instance. There are two ways to specify the
+    servers to be contacted by the proxy. They can either be listed
+    exhaustively or retrieved from an existing replication topology. See "setup
+    proxy-server --help" for specific options
+
+
+The global options are:
+
+--acceptLicense
+    Automatically accepts the product license (if present)
+--adminConnectorPort {port}
+    Port on which the Administration Connector should listen for communication
+-N, --certNickname {nickname}
+    Nickname of a keystore entry containing a certificate that the server
+    should use when negotiating secure connections using StartTLS or SSL.
+    Multiple keystore entries may be provided by using this option multiple
+    times
+-D, --rootUserDn {rootUserDN}
+    DN for the initial root user for the Directory Server
+    Default value: cn=Directory Manager
+-j, --rootUserPasswordFile {rootUserPasswordFile}
+    Path to a file containing the password for the initial root user for the
+    Directory Server
+-w, --rootUserPassword {rootUserPassword}
+    Password for the initial root user for the Directory Server
+-O, --doNotStart
+    Do not start the server when the configuration is completed
+--instancePath {path}
+    Path were the instance should be set up
+    Default value: /opt/forgerock-ds/5.0.0/opendj
+-W, --keyStorePassword {keyStorePassword}
+    Keystore cleartext password. The keystore password is required when you
+    specify an existing file-based keystore (JKS, JCEKS, PKCS#12)
+-u, --keyStorePasswordFile {keyStorePasswordFile}
+    Path to a file containing the keystore password. The keystore password is
+    required when you specify an existing file-based keystore (JKS, JCEKS,
+    PKCS#12)
+-Q, --quiet
+    Use quiet mode
+-S, --skipPortCheck
+    Skip the check to determine whether the specified ports are usable
+--useJavaKeyStore {keyStorePath}
+    Path of a JKS keystore containing the certificate(s) that the server should
+    use when negotiating secure connections using StartTLS or SSL
+--useJceks {keyStorePath}
+    Path of a JCEKS keystore containing the certificate(s) that the server
+    should use when negotiating secure connections using StartTLS or SSL
+--usePkcs11KeyStore
+    Use certificate(s) in a PKCS#11 token that the server should use when
+    accepting SSL-based connections or performing StartTLS negotiation
+--usePkcs12KeyStore {keyStorePath}
+    Path of a PKCS#12 keystore containing the certificate(s) that the server
+    should use when negotiating secure connections using StartTLS or SSL
+--productionMode
+    Harden default configuration for production use.
+
+General options:
+
+-V, --version
+    Display Directory Server version information
+-?, -H, --help
+    Display this usage information
+
+An error occurred while parsing the command-line arguments:  Argument
+"directory-manager" does not start with one or two dashes and unnamed trailing
+arguments are not allowed
+
+See "setup --help" to get more usage help
