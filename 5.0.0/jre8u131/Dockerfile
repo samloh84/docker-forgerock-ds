@@ -30,8 +30,9 @@ chmod +x ${INSTALL_DIR}/setup.py && \
 
 fix-ownership ${INSTALL_DIR} && \
 fix-permissions ${INSTALL_DIR} && \
-rm -rf ${TEMP_DIR_ROOT} && \
-popd
+popd && \
+rm -rf ${TEMP_DIR_ROOT}
+
 
 ENV OPENDJ_HOME ${INSTALL_DIR}
 ENV PATH ${PATH}:${OPENDJ_HOME}/bin
